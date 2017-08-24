@@ -1,0 +1,20 @@
+{% load thumbnail %}
+{% load rss_feed_tags %}
+<div class="rss-feed">
+  {% for item in instance.get_feed%}
+  <div class="feed-item">
+    {% with content=item.content %}
+          {% for key, value in content.items %}
+            {% if key not in content.multimedia and key != 'multimedia' %}
+              <p class='{{key}}'>{{value}}</p>
+            {% endif %}
+          {% endfor %}
+          {% if 'multimedia' in content %}
+            {% for img_key, img_id in content.multimedia.items %}
+              <img class='{{img_key}}' src='{% thumbnail img_id|get_filer_image 640x480 crop upscale %}' />
+            {% endfor %}
+          {% endif %}
+    {% endwith %}
+  </div>
+  {% endfor %}
+</div>
